@@ -12233,7 +12233,7 @@ function homePageChartSetting(id, chartType, layout, data, createcount, event, e
 				var errorCount = 0;
 				var chartConfigId = "visionChartProperties ul li";
 				if (['BasicAreaChart', 'StackedAreaChart', 'GradStackAreaChart', 'AreaPiecesChart', 'BarAndLine', 'boxplot', "heatMap", 'ganttchart'].includes(type)) {
-					chartOptAllObj = getChartPropertiesEchart(type.toUpperCase(), count);
+					chartOptAllObj = getChartPropertiesEchart(type.toUpperCase(),'');
 				} else {
 					$('#' + chartConfigId).each(function(i, ele) {
 						var optColName = $(this).attr("data-column-name");
@@ -17132,6 +17132,8 @@ function getToolBox(chartId, chartType, tableName, chartCOnfigObjStr, response, 
 	var tempData = response.data;
 	$("#" + chartId + "_toolBox").show();
 	$("#" + chartId + "_legends").hide();
+	$("#"+chartId).addClass('chartMain');
+	var responseData = response['data'] ?? response['source'];
 	var li = '';
 	if (['SunBurst', 'TreeMap'].includes(chartType)) {
     li = `<li rel="tooltip" class="modebar-btn" title="Date Columns" style="padding: 4px;border-bottom: 1px solid #ddd;text-align: center;">
@@ -17182,7 +17184,7 @@ function getToolBox(chartId, chartType, tableName, chartCOnfigObjStr, response, 
 
 
 	li += `<li rel="tooltip" class="modebar-btn" title="Edit Chart" style="padding: 4px;border-bottom: 1px solid #ddd;text-align: center;">
-    <svg viewBox="0 0 448 512" class="icon" height="1em" width="1em" style="fill: rgb(11, 74, 153);" onclick="homePageChartSetting('${chartId}','${chartType}',' ','${chartCOnfigObjStr}','${count}')">
+    <svg viewBox="0 0 448 512" class="icon" height="1em" width="1em" style="fill: rgb(11, 74, 153);" onclick="homePageChartSetting('${chartId}','${chartType}',' ','${chartCOnfigObjStr}','')">
 		<path d='M490.3 40.4C512.2 62.27 512.2 97.73 490.3 119.6L460.3 149.7L362.3 51.72L392.4 21.66C414.3-.2135 449.7-.2135 471.6 21.66L490.3 40.4zM172.4 241.7L339.7 74.34L437.7 172.3L270.3 339.6C264.2 345.8 256.7 350.4 248.4 353.2L159.6 382.8C150.1 385.6 141.5 383.4 135 376.1C128.6 370.5 126.4 361 129.2 352.4L158.8 263.6C161.6 255.3 166.2 247.8 172.4 241.7V241.7zM192 63.1C209.7 63.1 224 78.33 224 95.1C224 113.7 209.7 127.1 192 127.1H96C78.33 127.1 64 142.3 64 159.1V416C64 433.7 78.33 448 96 448H352C369.7 448 384 433.7 384 416V319.1C384 302.3 398.3 287.1 416 287.1C433.7 287.1 448 302.3 448 319.1V416C448 469 405 512 352 512H96C42.98 512 0 469 0 416V159.1C0 106.1 42.98 63.1 96 63.1H192z'></path>"
 		</svg></li>
 
@@ -17198,11 +17200,13 @@ function getToolBox(chartId, chartType, tableName, chartCOnfigObjStr, response, 
 		<li id='${chartId}_echartTypes' rel="tooltip" class="modebar-btn" title="Chart Types" style="padding: 4px;border-bottom: 1px solid #ddd;text-align: center;">
     <svg viewBox="0 0 448 512" class="icon" height="1em" width="1em" style="fill: rgb(11, 74, 153);" onclick="changegraph('${chartId}','${chartType}',' ',' ','${count}','${noOfDataCount}')">
 		<path d='M424.1 287c-15.13-15.12-40.1-4.426-40.1 16.97V352H336L153.6 108.8C147.6 100.8 138.1 96 128 96H32C14.31 96 0 110.3 0 128s14.31 32 32 32h80l182.4 243.2C300.4 411.3 309.9 416 320 416h63.97v47.94c0 21.39 25.86 32.12 40.99 17l79.1-79.98c9.387-9.387 9.387-24.59 0-33.97L424.1 287zM336 160h47.97v48.03c0 21.39 25.87 32.09 40.1 16.97l79.1-79.98c9.387-9.391 9.385-24.59-.0013-33.97l-79.1-79.98c-15.13-15.12-40.99-4.391-40.99 17V96H320c-10.06 0-19.56 4.75-25.59 12.81L254 162.7L293.1 216L336 160zM112 352H32c-17.69 0-32 14.31-32 32s14.31 32 32 32h96c10.06 0 19.56-4.75 25.59-12.81l40.4-53.87L154 296L112 352z'></path>"
-		</svg></li>
-	<li rel="tooltip" class="modebar-btn" title="Data on Flip" style="padding: 4px;border-bottom: 1px solid #ddd;text-align: center;">
-            <svg viewBox="0 0 448 512" class="icon" height="1em" width="1em" style="fill: rgb(11, 74, 153);" onclick="getChartDataonFlip('${chartId}','${JSON.stringify(response['data']).replaceAll('"','#')}')">
+		</svg></li>`;
+		if(chartType  !== 'BarAndLine'){
+	li+=`<li rel="tooltip" class="modebar-btn" title="Data on Flip" style="padding: 4px;border-bottom: 1px solid #ddd;text-align: center;">
+            <svg viewBox="0 0 448 512" class="icon" height="1em" width="1em" style="fill: rgb(11, 74, 153);" onclick="getChartDataonFlip('${chartId}','${JSON.stringify(responseData).replaceAll('"','#')}')">
         		 <path d='M448 32C483.3 32 512 60.65 512 96V416C512 451.3 483.3 480 448 480H64C28.65 480 0 451.3 0 416V96C0 60.65 28.65 32 64 32H448zM152 96H64V160H152V96zM208 160H296V96H208V160zM448 96H360V160H448V96zM64 288H152V224H64V288zM296 224H208V288H296V224zM360 288H448V224H360V288zM152 352H64V416H152V352zM208 416H296V352H208V416zM448 352H360V416H448V352z'></path>
-        		</svg></li>`
+        		</svg></li>`;
+        		}
 	$("#" + chartId + "_toolBox ul").html(li);
 }
 
@@ -20550,7 +20554,30 @@ function getDashboard(newcharttype, chartid, currenttype, createCount) {
 						var labelLegend = dataarr[i]['labelLegend'];
 						var colorsObj = dataarr[i]['colorsObj'];
 						var FilterColumn = dataarr[i]['FilterColumn'];
+
 						if (chartPropObj != null && chartPropObj != undefined) {
+								if(plotlyCharts.indexOf(currenttype)!= -1 && eChartsArrList.indexOf(newcharttype) != -1){
+									configobj=convertChartPropertiesPlotyToEchart(newcharttype, currenttype, JSON.parse(chartConfigObj),colorsObj);
+									var propobj = JSON.parse(chartPropObj);
+							Object.keys(propobj).forEach(function(key) {
+								var value = propobj[key];
+								var key = key.replace(type.toUpperCase(), newchartType);
+								chartpoprobj[key] = value;
+							});
+								}
+								else{
+								if(plotlyCharts.indexOf(newcharttype) != -1 && eChartsArrList.indexOf(currenttype)!= -1){
+									chartpoprobj=convertChartPropertiesEchartToPloty(newcharttype, currenttype,JSON.parse(chartConfigObj));
+									var chartConfigobj = JSON.parse(chartConfigObj);
+									Object.keys(chartConfigobj).forEach(function(key) {
+										var value = chartConfigobj[key];
+										var key = key.replace(type.toUpperCase(), newchartType);
+										configobj[key] = value;
+									});
+								}
+
+
+								else{
 							var propobj = JSON.parse(chartPropObj);
 							Object.keys(propobj).forEach(function(key) {
 								var value = propobj[key];
@@ -20568,17 +20595,20 @@ function getDashboard(newcharttype, chartid, currenttype, createCount) {
 								configobj[newcharttype.toUpperCase() + "LABELPOSITION"] = "inside";
 								chartpoprobj[newcharttype.toUpperCase() + "LABELPOSITION"] = "data";
 							}
+						}
+					}
 							if (chartpoprobj != null && !jQuery.isEmptyObject(chartpoprobj)) {
 								chartPropObj = JSON.stringify(chartpoprobj);
 								chartConfigObj = JSON.stringify(configobj);
 							}
-							var chartFilterParams = filterCondition;
+							var chartFilterParams=filterCondition;
 							var homepageFilterParamsObj = getHomepageFilterParamsArr(chartFilterParams, id);
-							var mainFilterConditionsObj = homepageFilterParamsObj['mainFilterConditions'];
-							if (!isNullOrUndefined(mainFilterConditionsObj) && !jQuery.isEmptyObject(mainFilterConditionsObj)) {
-								filterColumns = JSON.stringify(mainFilterConditionsObj);
-							}
-							var message = 'Do u want to save';
+								var mainFilterConditionsObj = homepageFilterParamsObj['mainFilterConditions'];
+								if (!isNullOrUndefined(mainFilterConditionsObj) && !jQuery.isEmptyObject(mainFilterConditionsObj)) {
+									filterColumns=JSON.stringify(mainFilterConditionsObj);
+								}
+
+							var message = 'Do u want to save or Apply';
 							var modalObj = {
 								title: labelObject["Message"] != null ? labelObject["Message"] : "Message",
 								body: "<div class='isPopupDefaultSaveClass'>" + message + "</div>",
@@ -20587,7 +20617,7 @@ function getDashboard(newcharttype, chartid, currenttype, createCount) {
 								{
 									text: labelObject['Save'] != null ? labelObject['Save'] : 'Save',
 									click: function() {
-										//                                        $(".isPopupDefaultSaveClass").val(""); 
+										//                                        $(".isPopupDefaultSaveClass").val("");
 										updategraphtypes(chartConfigObj, chartPropObj, chartid, newcharttype);
 										getVisualizeChart(chartid, newcharttype, XAxix, yAxix, table, aggColumnName, filterCondition, chartConfigObj, chartPropObj, count, labelLegend, colorsObj);
 										count++;
@@ -20595,13 +20625,6 @@ function getDashboard(newcharttype, chartid, currenttype, createCount) {
 									},
 									isCloseButton: true
 								},
-								{
-									text: labelObject['Cancel'] != null ? labelObject['Cancel'] : 'Cancel',
-									click: function() {
-
-									},
-									isCloseButton: true
-								}
 								/*{
 									text: labelObject['Apply'] != null ? labelObject['Apply'] : 'Apply',
 									click: function() {
@@ -20630,7 +20653,6 @@ function getDashboard(newcharttype, chartid, currenttype, createCount) {
 	});
 
 }
-
 function getEchartDashBoard(newchartType, chartId, currenttype, createCount) {
 	var chartIds = [];
 	chartIds.push(chartId);
@@ -24980,9 +25002,9 @@ function getSankeyChart(chartId, result, count, chartType, saveType) {
 		labelPosition = chartEditoptions['SANKEYLABELPOSITION'] || $('#SANKEYLABELPOSITION' + count).val();
 		labelData = chartEditoptions['SANKEYLABELDATA'] || $('#SANKEYLABELDATA' + count).val();
 		hoverlabeldata = chartEditoptions['SANKEYLABELDATA'] || $('#SANKEYLABELDATA' + count).val();
-		var colorsObj = (result['colors'] != null && result['colors'] != '' && result['colors'] != undefined) ? result['colors']['clrs'] : "";
+		var colorsObj = (result['colors'] != null && result['colors'] != '' && result['colors'] != undefined) ? result['colors'] : "";
 		if (colorsObj != null && colorsObj != '' && colorsObj != undefined) {
-			linkColors = JSON.parse(colorsObj);
+			linkColors = JSON.parse(colorsObj)['clrs'];
 		}
 	} else {
 		chartTitle = $('#SANKEYCHARTTITLE' + count).val() || result['chartTitle'];
@@ -24991,9 +25013,9 @@ function getSankeyChart(chartId, result, count, chartType, saveType) {
 		labelPosition = $('#SANKEYLABELPOSITION' + count).val();
 		labelData = $('#SANKEYLABELDATA' + count).val();
 		hoverlabeldata = $('#SANKEYHOVERLABELDATA' + count).val() || 'x+y';
-		var colorsObj = (result['colors'] != null && result['colors'] != '' && result['colors'] != undefined) ? result['colors']['clrs'] : "";
+		var colorsObj = (result['colors'] != null && result['colors'] != '' && result['colors'] != undefined) ? result['colors']: "";
 		if (colorsObj != null && colorsObj != '' && colorsObj != undefined) {
-			linkColors = JSON.parse(colorsObj);
+			linkColors = JSON.parse(colorsObj)['clrs'];
 		}
 
 	}
@@ -35386,7 +35408,7 @@ function getChartPropertiesEchart(bigChartType, count) {
 			var value = $('#' + bigChartType + property).val();
 		}
 		else
-			var value = $('#' + bigChartType + property + count).val();
+			var value = $('#' + bigChartType + property +count).val();
 
 		if (property === 'HOVERFONTCOLOR' && (value === undefined || value === null || value === '')) {
 			value = 'Arial, sans-serif';
@@ -35509,10 +35531,10 @@ function getBasicAreaChartTypeFromDashBoard(
 	var hoverTextFont =
 		chartCOnfigObjStr[bigChartType + "HOVERFONTCOLOR"] || "Arial, sans-serif";
 
-	var markerColor = colorsArr;//chartCOnfigObjStr[bigChartType + "COLORSMARKER"] || colorsArr;
+	var markerColor = colorsArr[0];//chartCOnfigObjStr[bigChartType + "COLORSMARKER"] || colorsArr;
 	var markerSize = chartCOnfigObjStr[bigChartType + "MARKERSIZE"] || "10";
-	var areaColor =colorsArr;// chartCOnfigObjStr[bigChartType + "COLORSAREA"] || colorsArr;
-	var linecolor = colorsArr;//chartCOnfigObjStr[bigChartType + "LINECOLORS"] || colorsArr;
+	var areaColor =colorsArr[0];// chartCOnfigObjStr[bigChartType + "COLORSAREA"] || colorsArr;
+	var linecolor = colorsArr[0];//chartCOnfigObjStr[bigChartType + "LINECOLORS"] || colorsArr;
 	var areaopacity = chartCOnfigObjStr[bigChartType + "OPACITY"] || "0.8";
 
 	
@@ -35543,16 +35565,16 @@ function getBasicAreaChartTypeFromDashBoard(
 				type: "line",
 				symbol: markerShape,
 				lineStyle: {
-					color: markerColor || colorsArr[0], // Line color in hexadecimal notation
+					color: linecolor , // Line color in hexadecimal notation
 					width: lineWidth, // Line width
 					type: linetype, // Line type: 'solid', 'dashed', 'dotted', etc.
 				},
 				areaStyle: {
-					color: areaColor || colorsArr[0],
+					color: areaColor ,
 					opacity: areaopacity, // Area opacity
 				},
 				itemStyle: {
-					color: linecolor || colorsArr[0], // Marker color in hexadecimal notation
+					color: markerColor , // Marker color in hexadecimal notation
 					borderColor: "#168ab9", // Border color of the marker
 					borderWidth: 2, // Border width of the marker
 					borderType: "solid", // Border type of the marker
@@ -36376,14 +36398,7 @@ function getAreaPiecesChartFromDashBoard(chartId, response, count, chartType) {
 					type: linetype, // Line type: 'solid', 'dashed', 'dotted', etc.
 				},
 				areaStyle: {
-					//    color: new echarts.graphic.LinearGradient( // Custom gradient for area color
-					//      0, 0, 0, 1, // Define the direction of the gradient (top to bottom in this case)
-					//      [
-					//        { offset: 0, color: areaColor[0] || colorsArr[0] }, // Color at 0% position
-					//        //{ offset: 1, color: '#36a0d9' } // Color at 100% position
-					//      ]
-					//    ),
-					//    opacity: areaopacity // Area opacity
+					color: areaColor[0] || colorsArr[0],
 				},
 				itemStyle: {
 					color: markerColor[0] || colorsArr[0], // Marker color in hexadecimal notation
