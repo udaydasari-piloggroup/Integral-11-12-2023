@@ -2204,6 +2204,62 @@ public class DashBoardsService {
 		geochart.append(getCandleSticktProperties("GEOCHART"));
 		geochart.append(endUltag);
 
+		StringBuilder barAndLineChart = new StringBuilder(startUltag);
+		barAndLineChart.append(getGeneralFilters("BARANDLINE"));
+		barAndLineChart.append(getLabelAndHoverDataFiltersWithOutPercentage("BARANDLINE"));
+		barAndLineChart.append("<li class=\"general-filters active-filter\" data-column-name=\"BARMODE\" data-key-type=\"layout\">"
+				+ "<div class=\"sub-filterItems\">" + "<p>Bar Mode</p>"
+				+ "<select name=\"text-info\" id=\"BARMODE\" data-opt-name=\"barmode\">"
+				+ "<option value=\"group\">Group</option>" + "<option value=\"stack\">Stack</option>"
+				+ "</select>" + "</div>" + "</li>");
+		barAndLineChart .append("<li class=\"general-filters active-filter\" data-column-name=\"BARGAP\" data-key-type=\"layout\">"
+				+ "<div class=\"sub-filterItems\">"
+				+ "<p>Bar Gap</p>"
+				+ "<input id=\"BARGAP\" data-opt-name=\"bargap\" data-man=\"O\" title=\"Gap\" type=\"range\" min=\"10\" max=\"100\" step=\"10\" value=\"20\" />"
+				+ "</div>"
+				+ "</li>");
+		barAndLineChart.append(getChartAreaProperties("BARANDLINE","M"));
+		barAndLineChart.append(getLineColorProperties("BARANDLINE","S"));
+		barAndLineChart.append(endUltag);
+
+
+		StringBuilder sankey = new StringBuilder(startUltag);
+		sankey.append(getGeneralFilters("SANKEY"));
+		sankey.append(getLabelAndHoverDataFiltersWithOutPercentage("SANKEY"));
+		sankey.append("<li class=\"general-filters active-filter\" data-column-name=\"LINEOPACITY\" data-key-type=\"layout\">"
+				+ "<div class=\"sub-filterItems\">"
+				+ "<p>Opacity</p>"
+				+ "<input id=\"SANKEYLINEOPACITY\" data-opt-name=\"sankeylineopacity\" data-man=\"O\" title=\"opacity\" type=\"range\" min=\"0\" max=\"1\" step=\"0.1\" value=\"0.5\" />"
+				+ "</div>"
+				+ "</li>");
+		sankey .append("<li class=\"general-filters active-filter\" data-column-name=\"SANKEYCURVENESS\" data-key-type=\"layout\">"
+				+ "<div class=\"sub-filterItems\">"
+				+ "<p>Curveness</p>"
+				+ "<input id=\"SANKEYCURVENESS\" data-opt-name=\"sankeycurverness\" data-man=\"O\" title=\"Curveness\" type=\"range\" min=\"0\" max=\"1\" step=\"0.1\" value=\"0.5\" />"
+				+ "</div>"
+				+ "</li>");
+		// sankey.append("<li class=\"general-filters active-filter\" data-column-name=\"" + "SANKEY"
+		// 		+ "LABELPOSITION\" data-key-type=\"data\">" + "<div class=\"sub-filterItems\">" + "<p>Text Position</p>"
+		// 		+ "<select name=\"text-position\" id=\"" + "SANKEY" + "LABELPOSITION\" data-opt-name=\"textposition\">"
+		// 		+ "<option value=\"inside\">Inside</option>" + "<option value=\"top\">Top</option>"
+		// 		+ "<option value=\"right\">Right</option>" + "<option value=\"bottom\">Bottom</option>"
+		// 		+"<option value=\"left\">Left</option>"
+		// 		+ "</select>"
+		// 		+ "</div>" + "</li>");
+		sankey.append(endUltag);
+
+		StringBuilder boxPlot = new StringBuilder(startUltag);
+		boxPlot.append(getGeneralFilters("BOXPLOT"));
+		boxPlot.append("<li class=\"general-filters active-filter\" data-column-name=\"" + "BOXPLOT"
+				+ "HOVERLABELDATA\" data-key-type=\"data\">" + "<div class=\"sub-filterItems\">"
+				+ "<p>Hover Data Visible</p>" + "<select name=\"text-info\" id=\"" + "BOXPLOT"
+				+ "HOVERLABELDATA\" data-opt-name=\"hoverinfo\" >" + "<option value=\"x\">Label</option>"
+				+ "<option value=\"y\">Value</option>"
+				+ "<option value=\"x+y\" selected>Label and value</option>"
+				+  "</select>" + "</div>" + "</li>");
+		boxPlot.append(getChartAreaProperties("BOXPLOT","S"));
+		boxPlot.append(endUltag);
+
 
 		jsonChartFilter.put("pie", pieChart);
 		jsonChartFilter.put("donut", donutChart);
@@ -2227,7 +2283,33 @@ public class DashBoardsService {
 		jsonChartFilter.put("ganttChart",ganttChart.toString());  
 		jsonChartFilter.put("candlestick", candlestick);
 		jsonChartFilter.put("geochart", geochart);
+		jsonChartFilter.put("BarAndLine", barAndLineChart.toString());
+		jsonChartFilter.put("sankey",sankey.toString());
+		jsonChartFilter.put("boxplot", boxPlot.toString());
 		return jsonChartFilter;
+	}
+	public String getLabelAndHoverDataFiltersWithOutPercentage(String chartType) {
+		String labelAndHoverDataFilters = "<li class=\"general-filters active-filter\" data-column-name=\"" + chartType
+				+ "LABELDATA\" data-key-type=\"data\">" + "<div class=\"sub-filterItems\">" + "<p>Data Visible</p>"
+				+ "<select name=\"text-info\" id=\"" + chartType + "LABELDATA\" data-opt-name=\"textinfo\">"
+				+ "<option value=\"''\">None</option>" + "<option value=\"x\" selected>Label</option>"
+				+ "<option value=\"y\">Value</option>"
+				+ "<option value=\"x+y\">Label and value</option>"
+				+  "</select>" + "</div>" + "</li>"
+				+ "<li class=\"general-filters active-filter\" data-column-name=\"" + chartType
+				+ "HOVERLABELDATA\" data-key-type=\"data\">" + "<div class=\"sub-filterItems\">"
+				+ "<p>Hover Data Visible</p>" + "<select name=\"text-info\" id=\"" + chartType
+				+ "HOVERLABELDATA\" data-opt-name=\"hoverinfo\" >" + "<option value=\"x\">Label</option>"
+				+ "<option value=\"y\">Value</option>"
+				+ "<option value=\"x+y\" selected>Label and value</option>"
+				+  "</select>" + "</div>" + "</li>"
+				+ "</li>" + "<li class=\"general-filters active-filter\" data-column-name=\"" + chartType
+				+ "LABELPOSITION\" data-key-type=\"data\">" + "<div class=\"sub-filterItems\">" + "<p>Text Position</p>"
+				+ "<select name=\"text-position\" id=\"" + chartType + "LABELPOSITION\" data-opt-name=\"textposition\">"
+				+ "<option value=\"inside\">Inside</option>" + "<option value=\"outside\">Outside</option>"
+				+ "<option value=\"auto\">Auto</option></select>"
+				+ "</div>" + "</li>";
+		return labelAndHoverDataFilters;
 	}
 
 	public String getTitleFilters(String chartType) {

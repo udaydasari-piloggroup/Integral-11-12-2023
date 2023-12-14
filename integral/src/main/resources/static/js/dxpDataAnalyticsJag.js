@@ -2806,7 +2806,7 @@ function getInsightsDataView(tableName) {
 		dataType: 'json',
 		traditional: true,
 		cache: false,
-		async: false,
+		async: true,
 		data: {
 			tableName: tableName
 		},

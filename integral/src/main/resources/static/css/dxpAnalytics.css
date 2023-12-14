@@ -6736,5 +6736,9 @@ userTableColumnsDivClassDXP:hover ::-webkit-scrollbar{
     .visionDbCompareChartsFilterButtonDivClass,.visionVisualizeDashboardHomeComapreTwoFiletersSpanClass,.visionVisualizeHomeChartTwoFiltersValues,.visionVisualizeChartTwoFiltersFieldClass{
                 display:none;
     }
+    .homeChartParentDiv .visionVisualChartBoxClass {
+    		height : auto !important;
+    	}
+
 
 	

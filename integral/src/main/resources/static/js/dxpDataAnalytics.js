@@ -7046,6 +7046,7 @@ function saveVisualizationData() {
 									$("#dailog_error_id").hide();
 									$(this).html("");
 									$(this).dialog("destroy");
+									dashBoardName = dashBoardName.trim();
 									$.ajax({
 										url: 'saveVisualizeData',
 										type: "POST",
@@ -7375,10 +7376,10 @@ function getVisualizationchart(dashbordname, dashbordTittle) {
 								+ "<input type='hidden' id='" + chartid + "_count' value='" + count + "'/>"
 								+ "<input type='hidden' id='" + chartid + "_dynamic_XAxisLength' value='" + JSON.parse(XAxix).length + "'/>"
                                 + "<input type='hidden' id='" + chartid + "_dynamic_YAxisLength' value='" + JSON.parse(yAxix).length + "'/>";
-							if (type != null && type != '' && type != undefined && eChartsArrList.indexOf(type) > -1) {
+
 								chartDivId += "<div id = '" + chartid + "_toolBox' class='iconsDiv' style='position: absolute;top: 2px;right: 3px;height: 99%; background: #f1f1f1;height: 349px;'><ul></ul></div>"
 									+ "<div id='" + chartid + "_radioButtons' class='visionVisualizeRadioButtonsClass'></div>";
-							}
+
 							chartDivId += "</div>";
 							$("#visualizechartId").append(chartDivId);
 							if (type != null && type != '' && type != undefined && (type == 'donut' || type == 'pie')) {
@@ -11557,7 +11558,8 @@ function deleteVisualizeChart(chartId, table, chartType, expandChartDivId) {
 						chartType: chartType
 					},
 					success: function(response) {
-						if (response != null) {
+						stopLoader();
+					if (response != null) {
 							$("#dialog").html(response);
 							$("#dialog").dialog({
 								title: (labelObject['Message'] != null ? labelObject['Message'] : 'Message'),
@@ -11569,7 +11571,8 @@ function deleteVisualizeChart(chartId, table, chartType, expandChartDivId) {
 									text: (labelObject['Ok'] != null ? labelObject['Ok'] : 'Ok'),
 									click: function() {
 										//  var divId = chartId +"_Chart";
-										var parentId = $("#" + chartId).parent().parent().attr('id');
+
+										var parentId = $("#" + chartId).parent().parent().parent().parent().parent().attr('id')
 										$("#" + parentId).remove();
 										$("#homepageChartDialog").empty();
 										$("#" + expandChartDivId).remove();
@@ -20653,6 +20656,9 @@ function getDashboard(newcharttype, chartid, currenttype, createCount) {
 	});
 
 }
+
+
+
 function getEchartDashBoard(newchartType, chartId, currenttype, createCount) {
 	var chartIds = [];
 	chartIds.push(chartId);
